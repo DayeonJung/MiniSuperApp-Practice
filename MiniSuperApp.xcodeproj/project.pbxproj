@@ -111,9 +111,9 @@
 			isa = PBXGroup;
 			children = (
 				B4915F57286D993F005F5F49 /* SuperPayDashboardRouter.swift */,
-				B4915F58286D993F005F5F49 /* SuperPayDashboardViewController.swift */,
 				B4915F59286D993F005F5F49 /* SuperPayDashboardBuilder.swift */,
 				B4915F5A286D993F005F5F49 /* SuperPayDashboardInteractor.swift */,
+				B4915F58286D993F005F5F49 /* SuperPayDashboardViewController.swift */,
 			);
 			path = SuperPayDashboard;
 			sourceTree = "<group>";
