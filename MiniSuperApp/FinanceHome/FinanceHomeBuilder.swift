@@ -7,7 +7,8 @@ protocol FinanceHomeDependency: Dependency {
 
 final class FinanceHomeComponent: Component<FinanceHomeDependency>,
                                   SuperPayDashboardDependency,
-                                  CardOnFileDashboardDependency {
+                                  CardOnFileDashboardDependency,
+                                  AddPaymentMethodDependency {
   var cardOnFileRepository: CardOnFileRepository
   var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher }
   private let balancePublisher: CurrentValuePublisher<Double>
@@ -51,12 +52,14 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
       
     let superPayDashboardBuilder = SuperPayDashboardBuilder(dependency: component)
     let cardOnFileDashboardBuilder = CardOnFileDashboardBuilder(dependency: component)
+    let addPaymentMethodBuilder = AddPaymentMethodBuilder(dependency: component)
     
     return FinanceHomeRouter(
         interactor: interactor,
         viewController: viewController,
         superPayDashboardBuildable: superPayDashboardBuilder,
-        cardOnFileDashboardBuildable: cardOnFileDashboardBuilder
+        cardOnFileDashboardBuildable: cardOnFileDashboardBuilder,
+        addPaymentMethodBuidlable: addPaymentMethodBuilder
     )
   }
 }
