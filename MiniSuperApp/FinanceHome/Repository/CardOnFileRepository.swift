@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import Combine
+import CoreText
 
 // 서버로부터 받아온 카드 목록 데이터
 protocol CardOnFileRepository {
   var cardOnFile: ReadOnlyCurrentValuePublisher<[PaymentMethod]> { get }
+  func addCard(info: AddPaymentMethodInfo) -> AnyPublisher<PaymentMethod, Error> // 비동기 고려
 }
 
 final class CardOnFileRepositoryImp: CardOnFileRepository {
@@ -19,10 +22,20 @@ final class CardOnFileRepositoryImp: CardOnFileRepository {
     PaymentMethod(id: "0", name: "우리은행", digits: "0123", color: "#f19a38ff", isPrimary: false),
     PaymentMethod(id: "1", name: "아무은행", digits: "4567", color: "#f19a38ff", isPrimary: false),
     PaymentMethod(id: "2", name: "신한은행", digits: "8901", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "3", name: "이런은행", digits: "2345", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "4", name: "저런은행", digits: "6789", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "0", name: "우리은행", digits: "0123", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "1", name: "아무은행", digits: "4567", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "2", name: "신한은행", digits: "8901", color: "#f19a38ff", isPrimary: false)
+//    PaymentMethod(id: "3", name: "이런은행", digits: "2345", color: "#f19a38ff", isPrimary: false),
+//    PaymentMethod(id: "4", name: "저런은행", digits: "6789", color: "#f19a38ff", isPrimary: false),
+//    PaymentMethod(id: "0", name: "우리은행", digits: "0123", color: "#f19a38ff", isPrimary: false),
+//    PaymentMethod(id: "1", name: "아무은행", digits: "4567", color: "#f19a38ff", isPrimary: false),
+//    PaymentMethod(id: "2", name: "신한은행", digits: "8901", color: "#f19a38ff", isPrimary: false)
   ])
+  
+  func addCard(info: AddPaymentMethodInfo) -> AnyPublisher<PaymentMethod, Error> {
+    let paymentMethod = PaymentMethod(id: "00", name: "new 카드", digits: "\(info.number.suffix(4))", color: "", isPrimary: false)
+    
+    var new = paymentMethodsSubject.value
+    new.append(paymentMethod)
+    paymentMethodsSubject.send(new)
+    
+    return Just(paymentMethod).setFailureType(to: Error.self).eraseToAnyPublisher()
+  }
 }
