@@ -79,6 +79,13 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
   }
   
   func detachAddPaymentMethod() {
+    guard let router = addPaymentMethodRouting else {
+      return
+    }
     
+    viewControllable.dismiss(completion: nil)
+    
+    detachChild(router)
+    addPaymentMethodRouting = nil
   }
 }
